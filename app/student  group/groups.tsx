@@ -19,7 +19,8 @@ type Student = {
 }
 
 function groups() {
-
+const [groupModalOpen, setGroupModalOpen] = useState(false)
+const [groupName, setGroupName] = useState("")
 const [groups, setGroups] = useState<Group[]>([])
 const [students, setStudents] = useState<Student[]>([])
 const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null)
@@ -61,6 +62,23 @@ const getStudentsByGroup = async (groupId: number) => {
 
   setStudents(data || [])
 }
+
+const addGroup = async () => {
+  const { data, error } = await supabase
+    .from("groups")
+    .insert([{ name: groupName, active: false }])
+    .select()
+    .single()
+
+  if (error) {
+    console.log("Guruh qo'shishda xatolik:", error)
+    return
+  }
+
+  setGroups([...groups, data])
+  setGroupName("")
+  setGroupModalOpen(false)
+}
   return (
     <div>
         <main className="min-h-screen bg-slate-100 p-8">
@@ -76,9 +94,12 @@ const getStudentsByGroup = async (groupId: number) => {
       />
 
       <div className="flex gap-4">
-        <button className="rounded-xl border px-5 py-3">
-          add group
-        </button>
+ <button
+  onClick={() => setGroupModalOpen(true)}
+  className="rounded-xl border px-5 py-3"
+>
+  add group
+</button>
 
         <button className="rounded-xl border px-5 py-3">
           add student
@@ -149,6 +170,27 @@ const getStudentsByGroup = async (groupId: number) => {
     ))}
   </tbody>
 </table>
+{groupModalOpen && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black/40">
+    <div className="w-96 rounded-2xl bg-white p-6">
+      <h2 className="mb-4 text-2xl font-bold">Add group</h2>
+
+      <input
+        placeholder="Group name"
+        value={groupName}
+        onChange={(e) => setGroupName(e.target.value)}
+        className="mb-4 w-full rounded-xl border px-4 py-3"
+      />
+
+      <button
+        onClick={addGroup}
+        className="rounded-xl bg-black px-5 py-3 text-white"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+)}
     </div>
   )
 }
