@@ -19,7 +19,7 @@ type Student = {
   group_id: number
 }
 
-function groups() {
+function Group() {
 const [groupModalOpen, setGroupModalOpen] = useState(false)
 const [groupName, setGroupName] = useState("")
 const [groups, setGroups] = useState<Group[]>([])
@@ -308,4 +308,4 @@ const addGroup = async () => {
   )
 }
 
-export default groups
+export default Group

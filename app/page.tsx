@@ -1,10 +1,11 @@
-import FoodPage from "./foods/food"
+import Groups from "./student-group/groups"
 
-
-function page() {
+function Page() {
   return (
-    <div><FoodPage/></div>
+    <div>
+      <Groups />
+    </div>
   )
 }
 
-export default page
+export default Page
