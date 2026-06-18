@@ -24,6 +24,21 @@ const [groups, setGroups] = useState<Group[]>([])
 const [students, setStudents] = useState<Student[]>([])
 const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null)
 const [search, setSearch] = useState("")
+
+useEffect(() => {
+  getGroups()
+}, [])
+
+const getGroups = async () => {
+  const { data, error } = await supabase.from("groups").select("*").order("id", { ascending: true })
+
+  if (error) {
+    console.log("Guruhlarni olishda xatolik:", error)
+    return
+  }
+
+  setGroups(data || [])
+}
   return (
     <div>groups</div>
   )
