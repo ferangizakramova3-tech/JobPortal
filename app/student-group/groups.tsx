@@ -39,6 +39,8 @@ export default function Groups() {
   const [email, setEmail] = useState("")
   const [active, setActive] = useState(false)
 
+  const [editStudentId, setEditStudentId] = useState<number | null>(null)
+
   useEffect(() => {
     getGroups()
   }, [])
@@ -98,6 +100,32 @@ export default function Groups() {
     setGroupModalOpen(false)
   }
 
+  const openStudentModal = () => {
+    setEditStudentId(null)
+    setFullname("")
+    setAge("")
+    setEmail("")
+    setActive(false)
+
+    if (selectedGroupId) {
+      setStudentGroupId(selectedGroupId)
+    } else {
+      setStudentGroupId(0)
+    }
+
+    setStudentModalOpen(true)
+  }
+
+  const closeStudentModal = () => {
+    setStudentModalOpen(false)
+    setEditStudentId(null)
+    setFullname("")
+    setAge("")
+    setEmail("")
+    setActive(false)
+    setStudentGroupId(0)
+  }
+
   const addStudent = async () => {
     if (!studentGroupId) {
       alert("Guruh tanlang")
@@ -127,12 +155,66 @@ export default function Groups() {
       setStudents([...students, data])
     }
 
-    setFullname("")
-    setAge("")
-    setEmail("")
-    setActive(false)
-    setStudentGroupId(0)
-    setStudentModalOpen(false)
+    closeStudentModal()
+  }
+
+  const openEditStudent = (student: Student) => {
+    setEditStudentId(student.id)
+    setFullname(student.fullname)
+    setAge(String(student.age))
+    setEmail(student.email)
+    setActive(student.active)
+    setStudentGroupId(student.group_id)
+    setStudentModalOpen(true)
+  }
+
+  const updateStudent = async () => {
+    if (!editStudentId) return
+
+    if (!studentGroupId) {
+      alert("Guruh tanlang")
+      return
+    }
+
+    const updatedStudent = {
+      fullname,
+      age: Number(age),
+      email,
+      active,
+      group_id: studentGroupId,
+    }
+
+    const { data, error } = await supabase
+      .from("students")
+      .update(updatedStudent)
+      .eq("id", editStudentId)
+      .select()
+      .single()
+
+    if (error) {
+      console.log("O'quvchini tahrirlashda xatolik:", error)
+      return
+    }
+
+    if (selectedGroupId === studentGroupId) {
+      setStudents(
+        students.map((student) =>
+          student.id === editStudentId ? data : student
+        )
+      )
+    } else {
+      setStudents(students.filter((student) => student.id !== editStudentId))
+    }
+
+    closeStudentModal()
+  }
+
+  const handleStudentSubmit = () => {
+    if (editStudentId) {
+      updateStudent()
+    } else {
+      addStudent()
+    }
   }
 
   const deleteStudent = async (id: number) => {
@@ -147,25 +229,6 @@ export default function Groups() {
     }
 
     setStudents(students.filter((student) => student.id !== id))
-  }
-
-  const openStudentModal = () => {
-    if (selectedGroupId) {
-      setStudentGroupId(selectedGroupId)
-    } else {
-      setStudentGroupId(0)
-    }
-
-    setStudentModalOpen(true)
-  }
-
-  const closeStudentModal = () => {
-    setStudentModalOpen(false)
-    setFullname("")
-    setAge("")
-    setEmail("")
-    setActive(false)
-    setStudentGroupId(0)
   }
 
   const filteredGroups = groups.filter((group) =>
@@ -278,7 +341,10 @@ export default function Groups() {
                     Delete
                   </button>
 
-                  <button className="rounded-lg bg-blue-500 px-3 py-2 text-white">
+                  <button
+                    onClick={() => openEditStudent(student)}
+                    className="rounded-lg bg-blue-500 px-3 py-2 text-white"
+                  >
                     Edit
                   </button>
                 </td>
@@ -343,7 +409,9 @@ export default function Groups() {
         }}
       >
         <div className="p-6">
-          <h2 className="mb-4 text-2xl font-bold">Add student</h2>
+          <h2 className="mb-4 text-2xl font-bold">
+            {editStudentId ? "Edit student" : "Add student"}
+          </h2>
 
           <input
             placeholder="Fullname"
@@ -398,10 +466,10 @@ export default function Groups() {
             </button>
 
             <button
-              onClick={addStudent}
+              onClick={handleStudentSubmit}
               className="flex-1 rounded-xl bg-black py-3 text-white"
             >
-              Save
+              {editStudentId ? "Update" : "Save"}
             </button>
           </div>
         </div>
