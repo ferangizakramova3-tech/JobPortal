@@ -41,6 +41,20 @@ export default function Groups() {
 
   const [editStudentId, setEditStudentId] = useState<number | null>(null)
 
+  const [pageSize, setPageSize] = useState(5)
+  const [page, setPage] = useState(1)
+
+  const totalPages = Math.ceil(students.length / pageSize)
+
+  const start = (page - 1) * pageSize
+  const end = start + pageSize
+
+  const paginatedStudents = students.slice(start, end)
+const pages: number[] = []
+
+for (let i = 1; i <= totalPages; i++) {
+  pages.push(i)
+}
   useEffect(() => {
     getGroups()
   }, [])
@@ -61,6 +75,7 @@ export default function Groups() {
 
   const getStudentsByGroup = async (groupId: number) => {
     setSelectedGroupId(groupId)
+    setPage(1)
 
     const { data, error } = await supabase
       .from("students")
@@ -324,9 +339,9 @@ export default function Groups() {
           </thead>
 
           <tbody>
-            {students.map((student, index) => (
+            {paginatedStudents.map((student, index) => (
               <tr key={student.id}>
-                <td className="p-4">{index + 1}</td>
+                <td className="p-4">{start + index + 1}</td>
                 <td className="p-4">{student.fullname}</td>
                 <td className="p-4">{student.age}</td>
                 <td className="p-4">{student.email}</td>
@@ -357,6 +372,41 @@ export default function Groups() {
           <p className="py-10 text-center text-slate-400">
             Bu guruhda hali o'quvchi yo'q
           </p>
+        )}
+
+        {students.length > 0 && (
+          <div className="mt-6 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="font-semibold">Har sahifada:</span>
+
+              <select
+                value={pageSize}
+                onChange={(e) => {
+                  setPageSize(Number(e.target.value))
+                  setPage(1)
+                }}
+                className="rounded-lg border px-4 py-2"
+              >
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={15}>15</option>
+              </select>
+            </div>
+
+<div className="flex gap-2">
+  {pages.map((number) => (
+    <button
+      key={number}
+      onClick={() => setPage(number)}
+      className={`rounded-lg border px-4 py-2 ${
+        page === number ? "bg-black text-white" : "bg-white text-black"
+      }`}
+    >
+      {number}
+    </button>
+  ))}
+</div>
+          </div>
         )}
       </div>
 

@@ -1,13 +1,578 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   margin: 0;
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, sans-serif;
+  color: #080b14;
+  background: #f8fafc;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Header style */
+.header {
+  height: 80px;
+  padding: 0 10%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e5e7eb;
+  background: white;
+}
+
+.logo,
+.adminLogo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.logo span,
+.adminLogo span {
+  background: #123f82;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.nav a {
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.nav a:hover {
+  color: #123f82;
+}
+
+.blueBtn,
+button {
+  background: #123f82;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 20px;
+  font-weight: bold;
+}
+
+.blueBtn:hover, button:hover {
+  background: #0f336a;
+}
+
+.whiteBtn {
+  background: white;
+  color: #111;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px 20px;
+  font-weight: bold;
+}
+
+.whiteBtn:hover {
+  background: #f9fafb;
+}
+
+/* Home / Hero styling */
+.home {
+  text-align: center;
+  padding: 150px 20px;
+}
+
+.orangeText {
+  color: #c2410c;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.home h1 {
+  font-size: 70px;
+  margin: 25px 0;
+  font-weight: 800;
+}
+
+.home h1 span {
+  color: #123f82;
+}
+
+.homeText {
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 22px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.homeButtons {
+  margin-top: 45px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.numbers {
+  margin-top: 70px;
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+}
+
+.numbers h2 {
+  color: #123f82;
+  font-size: 36px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.numbers p {
+  color: #666;
+}
+
+/* Jobs Page Layout - matching Screen 5 */
+.jobsLayout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 35px;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  align-items: start;
+}
+
+.filterBox {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.filterBox h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.filterGroup {
+  margin-bottom: 20px;
+}
+
+.filterGroup label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 8px;
+}
+
+.filterGroup input,
+.filterGroup select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+}
+
+.filterGroup input:focus,
+.filterGroup select:focus {
+  border-color: #123f82;
+}
+
+/* Public Job Card - matching Screen 5 */
+.publicJobCard {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  display: grid;
+  gap: 15px;
+  position: relative;
+}
+
+.jobInitialIcon {
+  width: 44px;
+  height: 44px;
+  background: #123f82;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+}
+
+.publicJobCard h2 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-right: 50px;
+}
+
+.publicJobCard .company {
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.tagRow {
+  display: flex;
+  gap: 10px;
+}
+
+.tagRow span {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.tagRow span.category {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.tagRow span.type {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.metaRow {
+  display: flex;
+  gap: 20px;
+  color: #6b7280;
+  font-size: 14px;
+  align-items: center;
+}
+
+.requirementsRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.requirementsRow span {
+  font-size: 12px;
+  background: #f3f4f6;
+  color: #4b5563;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+/* Detail page */
+.container {
+  width: min(1150px, 90%);
+  margin: 0 auto;
+  padding: 60px 0;
+}
+
+.searchInput {
+  width: 100%;
+  max-width: 500px;
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin: 25px 0;
+}
+
+.jobsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 20px;
+}
+
+.jobCard,
+.panel {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 28px;
+  background: white;
+}
+
+.jobCard {
+  display: grid;
+  gap: 10px;
+}
+
+.tag {
+  display: inline-block;
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  border-radius: 6px;
+  width: fit-content;
+  font-size: 13px;
+}
+
+.twoColumn {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 25px;
+}
+
+.form,
+.formGrid {
+  display: grid;
+  gap: 15px;
+}
+
+.form input,
+.form textarea,
+.formGrid input,
+.formGrid select,
+.formGrid textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+}
+
+.form input:focus,
+.form textarea:focus,
+.formGrid input:focus,
+.formGrid select:focus,
+.formGrid textarea:focus {
+  border-color: #123f82;
+}
+
+.form textarea,
+.formGrid textarea {
+  min-height: 130px;
+}
+
+.formGrid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.formGrid textarea,
+.formGrid button {
+  grid-column: 1 / -1;
+}
+
+.message {
+  color: #123f82;
+  font-weight: bold;
+}
+
+/* Admin layout styling - matching screenshots */
+.adminLayout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: black;
+  color: white;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+.sidebar .adminLogo {
+  color: white;
+  margin-bottom: 20px;
+}
+
+.sidebar .adminLogo span {
+  background: white;
+  color: black;
+  font-weight: bold;
+}
+
+.menuTitle {
+  margin-top: 30px;
+  color: #888;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.sidebar a {
+  padding: 14px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  color: #cbd5e1;
+}
+
+.sidebar a:hover {
+  background: rgba(255,255,255,0.08);
+  color: white;
+}
+
+.sidebar a.active {
+  background: white;
+  color: black;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+}
+
+.logout {
+  margin-top: auto;
+  background: #ff2d3d;
+  color: white;
+  text-align: center;
+  border-radius: 8px;
+  padding: 14px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.logout:hover {
+  background: #e02434;
+}
+
+.adminContent {
+  padding: 45px;
+  background: #f8fafc;
+}
+
+.adminTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+
+.adminTop h1 {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.adminTop p {
+  color: #6b7280;
+}
+
+/* Table styling in admin - matching screenshots */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 18px 24px;
+  border-bottom: 1px solid #f3f4f6;
+  text-align: left;
+}
+
+th {
+  background: #f9fafb;
+  color: #111827;
+  font-weight: bold;
+}
+
+td {
+  background: white;
+}
+
+td button {
+  background: transparent;
+  color: #123f82;
+  border: none;
+  font-weight: bold;
+  padding: 0;
+  margin-right: 15px;
+}
+
+td button:hover {
+  text-decoration: underline;
+}
+
+td .deleteBtn,
+td button:last-child {
+  color: #ff2d3d;
+  margin-right: 0;
+}
+
+td .deleteBtn:hover {
+  color: #e02434;
+}
+
+/* Modal and other styles */
+.modalContent {
+  padding: 10px;
+}
+
+.modalContent p {
+  color: #444;
+}
+
+/* Back button */
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 20px;
+}
+
+.backBtn:hover {
+  background: #f9fafb;
+}
+
+@media (max-width: 800px) {
+  .header,
+  .homeButtons,
+  .numbers,
+  .twoColumn,
+  .adminLayout,
+  .adminTop,
+  .formGrid,
+  .jobsLayout {
+    display: block;
+  }
+
+  .home h1 {
+    font-size: 42px;
+  }
+
+  .nav {
+    margin-top: 15px;
+    flex-wrap: wrap;
+  }
+
+  .adminContent {
+    padding: 25px;
+  }
+
+  .sidebar {
+    min-height: auto;
+  }
 }
